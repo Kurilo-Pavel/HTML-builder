@@ -40,6 +40,12 @@ fs.mkdir(pathProjectDist, {recursive: true}, (err) => {
 })();
 
 (async () => {
+  const checkAssets = await fs.promises.readdir(pathProjectDist, {encoding: 'utf-8', withFileTypes: true});
+  for (let assets of checkAssets) {
+    if (assets.isDirectory() && assets.name === 'assets') {
+      await fs.promises.rm(pathAssets, {recursive: true});
+    }
+  }
   const assets = await fs.promises.readdir(__dirname, {encoding: 'utf-8', withFileTypes: true});
   assets.forEach(folder => {
     if (folder.isDirectory() && folder.name === 'assets') {
